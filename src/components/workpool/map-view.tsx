@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow, Polyline } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, AdvancedMarker, Pin, useMapsLibrary } from "@vis.gl/react-google-maps";
 import type { Schedule } from "./schedule-card";
 
 // IMPORTANT: You need to add your Google Maps API Key to a .env.local file.
@@ -12,6 +12,43 @@ type MapViewProps = {
   schedules: Schedule[];
   selectedSchedule: Schedule | null;
 };
+
+function Polylines({schedules, selectedSchedule}: MapViewProps) {
+  const maps = useMapsLibrary('maps');
+  const [polylines, setPolylines] = useState<google.maps.Polyline[]>([]);
+
+  useEffect(() => {
+    if (!maps) return;
+
+    // clear old polylines
+    polylines.forEach(p => p.setMap(null));
+
+    const newPolylines = schedules.map(schedule => {
+      const p = new maps.Polyline({
+        path: schedule.route.points,
+        strokeColor: selectedSchedule?.id === schedule.id ? 'hsl(var(--primary))' : 'grey',
+        strokeOpacity: selectedSchedule?.id === schedule.id ? 1 : 0.5,
+        strokeWeight: selectedSchedule?.id === schedule.id ? 6 : 3,
+      });
+      return p;
+    });
+
+    setPolylines(newPolylines);
+
+    // Add a cleanup function to remove polylines from the map when the component unmounts.
+    return () => {
+      newPolylines.forEach(p => p.setMap(null));
+    };
+  }, [maps, schedules, selectedSchedule]);
+
+  useEffect(() => {
+    if(!maps) return;
+    polylines.forEach(p => p.setMap(maps.Map.prototype));
+  }, [maps, polylines]);
+
+
+  return null;
+}
 
 export function MapView({ schedules, selectedSchedule }: MapViewProps) {
   const [center, setCenter] = useState({ lat: 40.7128, lng: -74.0060 }); // Default to NYC
@@ -59,15 +96,9 @@ export function MapView({ schedules, selectedSchedule }: MapViewProps) {
                     <span className="text-2xl">🏁</span>
                 </AdvancedMarker>
             )}
-
-            <Polyline
-              path={schedule.route.points}
-              strokeColor={selectedSchedule?.id === schedule.id ? 'hsl(var(--primary))' : 'grey'}
-              strokeOpacity={selectedSchedule?.id === schedule.id ? 1 : 0.5}
-              strokeWeight={selectedSchedule?.id === schedule.id ? 6 : 3}
-            />
           </React.Fragment>
         ))}
+        <Polylines schedules={schedules} selectedSchedule={selectedSchedule} />
       </Map>
     </APIProvider>
   );
