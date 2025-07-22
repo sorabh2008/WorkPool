@@ -1,3 +1,5 @@
+import Dashboard from "@/components/workpool/dashboard";
+
 export default function Home() {
-  return <></>;
+  return <Dashboard />;
 }
