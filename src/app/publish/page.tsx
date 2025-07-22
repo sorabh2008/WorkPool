@@ -71,7 +71,7 @@ export default function PublishRidePage() {
               )}
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="time">Departure Time</Label>
                 <Input id="time" type="time" />
@@ -79,6 +79,10 @@ export default function PublishRidePage() {
               <div className="space-y-2">
                 <Label htmlFor="seats">Available Seats</Label>
                 <Input id="seats" type="number" min="1" max="8" placeholder="e.g., 3" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="price">Price per Seat ($)</Label>
+                <Input id="price" type="number" min="0" placeholder="e.g., 5.00" />
               </div>
             </div>
 
