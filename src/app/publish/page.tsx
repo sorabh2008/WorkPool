@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -6,11 +7,18 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { PlusCircle, Trash2 } from "lucide-react";
+import { PlusCircle, Trash2, Car } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function PublishRidePage() {
   const [waypoints, setWaypoints] = useState<string[]>([]);
   const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  // Mock car data, in a real app this would come from the user's profile
+  const userCars = [
+    { id: "car1", name: "Primary Sedan (Toyota Camry)", numberPlate: "S123 ABC" },
+    { id: "car2", name: "Weekend SUV (Ford Explorer)", numberPlate: "F456 XYZ" },
+  ];
 
   const addWaypoint = () => {
     if (waypoints.length < 5) {
@@ -70,6 +78,28 @@ export default function PublishRidePage() {
                 </Button>
               )}
             </div>
+            
+            <div className="space-y-2">
+                <Label htmlFor="car">Vehicle</Label>
+                <Select defaultValue="car1">
+                  <SelectTrigger id="car" className="w-full">
+                    <SelectValue placeholder="Select a car" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {userCars.map(car => (
+                      <SelectItem key={car.id} value={car.id}>
+                        <div className="flex items-center gap-3">
+                           <Car className="h-4 w-4 text-muted-foreground" />
+                           <div>
+                            <p>{car.name}</p>
+                            <p className="text-xs text-muted-foreground">{car.numberPlate}</p>
+                           </div>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+            </div>
 
             <div className="grid md:grid-cols-3 gap-4">
               <div className="space-y-2">
@@ -108,3 +138,5 @@ export default function PublishRidePage() {
     </div>
   );
 }
+
+    
