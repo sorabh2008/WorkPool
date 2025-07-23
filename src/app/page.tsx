@@ -1,5 +1,5 @@
-import Dashboard from "@/components/workpool/dashboard";
+import LandingPage from "@/components/workpool/landing-page";
 
 export default function Home() {
-  return <Dashboard />;
+  return <LandingPage />;
 }
