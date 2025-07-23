@@ -4,8 +4,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CalendarDays, Clock, Users, MapPin, ShieldAlert, Star } from "lucide-react"
+import { CalendarDays, Clock, Users, MapPin, ShieldAlert, Star, Send } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
 
 export type Schedule = {
   id: string;
@@ -34,6 +35,15 @@ type ScheduleCardProps = {
 };
 
 export function ScheduleCard({ schedule, isSelected = false }: ScheduleCardProps) {
+  const { toast } = useToast();
+
+  const handleRequestJoin = () => {
+    toast({
+      title: "Request Sent!",
+      description: `Your request to join ${schedule.driver.name}'s ride has been sent.`,
+    });
+  }
+
   return (
     <Card className={cn("transition-all duration-300 cursor-pointer hover:shadow-lg", isSelected ? "border-primary ring-2 ring-primary" : "")}>
       <CardHeader>
@@ -82,7 +92,8 @@ export function ScheduleCard({ schedule, isSelected = false }: ScheduleCardProps
           <Users className="w-4 h-4 text-muted-foreground" />
           <span>{schedule.availableSeats} seats available</span>
         </div>
-        <Button size="sm" style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }}>
+        <Button size="sm" style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }} onClick={handleRequestJoin}>
+          <Send className="mr-2 h-4 w-4" />
           Request to Join
         </Button>
       </CardFooter>

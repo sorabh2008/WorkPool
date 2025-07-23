@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Car, LogOut, Settings, User, Route } from "lucide-react";
+import { Car, LogOut, Settings, User, Route, Inbox } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -31,6 +31,9 @@ export default function Header() {
           </Link>
           <Link href="/publish" className="transition-colors hover:text-foreground/80 text-foreground/60">
             Offer a Ride
+          </Link>
+          <Link href="/requests" className="transition-colors hover:text-foreground/80 text-foreground/60">
+            Requests
           </Link>
           <Link href="/history" className="transition-colors hover:text-foreground/80 text-foreground/60">
             My Trips
@@ -62,6 +65,12 @@ export default function Header() {
                   <Link href="/profile">
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                 <DropdownMenuItem asChild>
+                   <Link href="/requests">
+                    <Inbox className="mr-2 h-4 w-4" />
+                    <span>Inbox</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
