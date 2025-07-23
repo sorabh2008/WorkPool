@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -54,7 +55,7 @@ export function UserAuthForm({ className, formType, ...props }: UserAuthFormProp
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4">
-          {formType === 'signup' && (
+          {formType === 'signup' && 'name' in errors && (
             <div className="grid gap-1">
               <Label htmlFor="name">Name</Label>
               <Input
@@ -82,7 +83,7 @@ export function UserAuthForm({ className, formType, ...props }: UserAuthFormProp
               disabled={isLoading}
               {...register("email")}
             />
-            {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+            {'email' in errors && errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
           </div>
           <div className="grid gap-1">
             <Label htmlFor="password">Password</Label>
@@ -93,7 +94,7 @@ export function UserAuthForm({ className, formType, ...props }: UserAuthFormProp
               disabled={isLoading}
               {...register("password")}
             />
-            {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
+            {'password' in errors && errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
           </div>
           <Button disabled={isLoading} style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
